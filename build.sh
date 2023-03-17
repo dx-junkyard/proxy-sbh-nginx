@@ -34,18 +34,20 @@ done
 echo "step3: create build-docker-image"
 cat service_list.txt | while read TARGET
 do
-docker build -t ${TARGET} -f Docker-build.${TARGET} .
+docker build -t ${TARGET}-build -f Docker-build.${TARGET} .
 done
 
 echo "step4: build"
 cat service_list.txt | while read TARGET
 do
+echo "---------- ${TARGET} ----------"
 docker run --rm -v $(pwd):/output -p 8080:8080 ${TARGET}-build
 done
 
 echo "step5: create build-docker-image"
 cat service_list.txt | while read TARGET
 do
+echo "---------- ${TARGET} ----------"
 docker build -t ${TARGET} -f Docker-run.${TARGET} .
 done
 
