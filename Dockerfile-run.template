@@ -1,0 +1,4 @@
+FROM openjdk:11-jdk-slim
+COPY ./GIT-REPOSITORY-NAME-XXX.jar /GIT-REPOSITORY-NAME-XXX.jar
+ENTRYPOINT ["java","-jar","/GIT-REPOSITORY-NAME-XXX.jar"]
+
