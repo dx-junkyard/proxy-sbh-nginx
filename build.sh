@@ -26,8 +26,8 @@ cat service_list.txt | while read TARGET
 do
 echo "TARGET=${TARGET}"
 #clean_up ${TARGET}
-sed "s/GIT-REPOSITORY-NAME-XXX/${TARGET}/g" Dockerfile-build.template > Docker-build.${TARGET}
-sed "s/GIT-REPOSITORY-NAME-XXX/${TARGET}/g" Dockerfile-run.template > Docker-run.${TARGET}
+sed "s/GIT-REPOSITORY-NAME-XXX/${TARGET}/g" ./templates/Dockerfile-build.template > Docker-build.${TARGET}
+sed "s/GIT-REPOSITORY-NAME-XXX/${TARGET}/g" ./templates/Dockerfile-run.template > Docker-run.${TARGET}
 done
 
 
@@ -44,9 +44,20 @@ echo "---------- ${TARGET} ----------"
 docker run --rm -v $(pwd):/output -p 8080:8080 ${TARGET}-build
 done
 
-echo "step5: create build-docker-image"
+echo "step5: create run-docker-image"
 cat service_list.txt | while read TARGET
 do
+echo "---------- ${TARGET} ----------"
+docker build -t ${TARGET} -f Docker-run.${TARGET} .
+done
+
+
+echo "step6: create docker-compose.yaml"
+cp templates/DockerComposeBaseTemplate.yaml ./docker-compose.yaml
+cat service_list.txt | while read TARGET
+do
+APP_NAME=`echo "${TARGET}" | sed 's/-spring/-app/g'`
+sed "s/GIT-REPOSITORY-NAME-XXX/${TARGET}/g" ./templates/DockerComposeServiceTemplate.yaml | sed "s/GIT-REPOSITORY-NAME-APP/${APP_NAME}/g" >> ./docker-compose.yaml
 echo "---------- ${TARGET} ----------"
 docker build -t ${TARGET} -f Docker-run.${TARGET} .
 done

@@ -33,18 +33,3 @@ services:
     - ./sports-barrier-free-mysql/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     - ./sports-barrier-free-mysql/mysql/db:/docker-entrypoint-initdb.d
 
-  webapp1:
-    image: api-equipment-rental
-    restart: always
-    depends_on:
-      db:
-        condition: service_healthy
-    expose:
-      - "8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/spohubdb
-      SPRING_DATASOURCE_USERNAME: spohub
-      SPRING_DATASOURCE_PASSWORD: spohub
-      VIRTUAL_HOST: localhost
-      VIRTUAL_PORT: 8080
-
