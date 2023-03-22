@@ -3,6 +3,7 @@ version: '3'
 services:
   nginx-proxy:
     image: nginx:latest
+    restart: always
     volumes:
       - "$PWD/nginx.config/:/etc/nginx/conf.d/"
     ports:

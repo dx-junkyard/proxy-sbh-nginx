@@ -36,7 +36,7 @@ done
 echo "step3: create build-docker-image"
 cat service_list.txt | while read TARGET
 do
-docker build -t ${TARGET}-build -f Docker-build.${TARGET} .
+docker build --no-cache -t ${TARGET}-build -f Docker-build.${TARGET} .
 done
 
 # 4. imageを起動してjarファイルを取り出す
@@ -52,7 +52,7 @@ echo "step5: create run-docker-image"
 cat service_list.txt | while read TARGET
 do
 echo "---------- ${TARGET} ----------"
-docker build -t ${TARGET} -f Docker-run.${TARGET} .
+docker build --no-cache -t ${TARGET} -f Docker-run.${TARGET} .
 done
 
 
