@@ -2,18 +2,19 @@ version: '3'
 
 services:
   nginx-proxy:
-    image: jwilder/nginx-proxy
+    image: nginx:latest
+    volumes:
+      - "$PWD/nginx.config/:/etc/nginx/conf.d/"
     ports:
       - "80:80"
-    volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+
 
   # MySQL
   db:
     platform: linux/x86_64
     image: mysql:latest
     restart: always
-    container_name: spohub_mysql
+    container_name: spohub-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: spohubdb

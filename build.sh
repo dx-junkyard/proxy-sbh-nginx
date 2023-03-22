@@ -56,15 +56,30 @@ docker build -t ${TARGET} -f Docker-run.${TARGET} .
 done
 
 
-# 6. DBと各サービスの起動
+# 6. nginx設定ファイル、docker-compose.yaml生成、各サービスのimage生成
 echo "step6: create docker-compose.yaml"
+N=80
+NGINX_CONFIG_DIR=./nginx.config
+NEW_NGINX_CONFIG=${NGINX_CONFIG_DIR}/default.conf
+if [ -d ${NGINX_CONFIG_DIR} ]; then
+  rm -rf ${NGINX_CONFIG_DIR}
+fi
+mkdir ${NGINX_CONFIG_DIR}
+
 cp templates/DockerComposeBaseTemplate.yaml ./docker-compose.yaml
+cp templates/nginx.base.template ${NEW_NGINX_CONFIG}
+
 cat service_list.txt | while read TARGET
 do
+PORT_NO=$((8000+N))
 APP_NAME=`echo "${TARGET}" | sed 's/-spring/-app/g'`
-sed "s/GIT-REPOSITORY-NAME-XXX/${TARGET}/g" ./templates/DockerComposeServiceTemplate.yaml | sed "s/GIT-REPOSITORY-NAME-APP/${APP_NAME}/g" >> ./docker-compose.yaml
+VIRTUAL_PATH=`echo "${TARGET}" | sed 's/-spring//g' | sed 's/api-//g'`
+sed "s/GIT-REPOSITORY-NAME-XXX/${TARGET}/g" ./templates/DockerComposeServiceTemplate.yaml | sed "s/GIT-REPOSITORY-NAME-APP/${APP_NAME}/g" | sed "s/PORT-NO-XXX/${PORT_NO}/g" >> ./docker-compose.yaml
+sed "s/GIT-REPOSITORY-NAME-APP/${APP_NAME}/g" ./templates/nginx.services.template | sed "s/VIRTUAL-PATH-XXX/${VIRTUAL_PATH}/g" >> ${NEW_NGINX_CONFIG}
 echo "---------- ${TARGET} ----------"
-docker build -t ${TARGET} -f Docker-run.${TARGET} .
+docker build --no-cache -t ${TARGET} -f Docker-run.${TARGET} .
+N=$((N+1))
 done
 
+echo "}" >> ${NEW_NGINX_CONFIG}
 
