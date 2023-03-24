@@ -1,2 +1,3 @@
 api-sportsevent-spring
 api-equipment-rental-spring
+api-facility-rental-spring
