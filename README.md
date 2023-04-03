@@ -1,16 +1,20 @@
 # proxy-sbh-nginx
 
-### 1. build project -> create jar -> create service image
-ここでは、以下を行います。
-- ビルド用のコンテナimageの生成
-- jarファイル生成
-- 生成したjarを使ったサービスのコンテナimageの生成
-- nginx-proxy、MySQL、前述の各サービスimageのコンテナを起動するdocker-compose.yamlの生成
+### 概要説明
+Tokyo OSS Party!!の作品、[Sports Barrier-free Hub](https://protopedia.net/prototype/3746)のバックエンド。
+
+
+### 1. ビルドとサービス起動に必要な各種ファイル生成
 ```
 sh build.sh
 ```
+ここでは、以下を行います。
+- ビルド用のdocker image生成
+- jarファイル生成
+- 生成したjarを使ったサービスのimageの生成
+- nginx-proxy、MySQL、前述の各サービスを起動するdocker-compose.yamlの生成
 
-### 2. start nginx-proxy -> start mysql ->  start microservices
+### 2. proxy, 各サービス、DBの起動
 ```
 docker-compose up
 ```
