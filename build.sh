@@ -27,7 +27,6 @@ echo "step2: create dockerfile"
 cat service_list.txt | while read TARGET
 do
 echo "TARGET=${TARGET}"
-#clean_up ${TARGET}
 sed "s/GIT-REPOSITORY-NAME-XXX/${TARGET}/g" ./templates/Dockerfile-build.template > Docker-build.${TARGET}
 sed "s/GIT-REPOSITORY-NAME-XXX/${TARGET}/g" ./templates/Dockerfile-run.template > Docker-run.${TARGET}
 done
@@ -83,3 +82,8 @@ done
 
 echo "}" >> ${NEW_NGINX_CONFIG}
 
+# 7. SSL証明書の生成
+cp ./templates/Dockerfile-localhost-ssl  .
+clean_up certs
+mkdir ./certs
+docker build --no-cache -t localhost-ssl -f Dockerfile-localhost-ssl  .
