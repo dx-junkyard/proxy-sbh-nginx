@@ -35,3 +35,21 @@ curl -XGET http://localhost/sportsevent/v1/api/event?eventId=2
 curl -XPOST -H "Content-Type: application/json"  http://localhost/equipment-rental/v1/api/equipment-reserve -d'{"equipmentList":[{"equipmentId":1,"equipmentN":3}],"eventId":1,"renterId":"UPxxxxxxxxxxxxxx01","startDate":"2023-03-25 00:00:00","endDate":"2023-03-26 00:00:00","usageDate":"2023-03-26 00:00:00","comment":"何かコメント"}'
 ```
 
+#### DBへの記録状態の確認
+以下でIMAGE名からmysqlに該当するものを探し、対象のCONTAINER IDを取得する
+
+```
+docker ps
+```
+mysqlのコンテナに接続し、テーブル一覧を取得する
+```
+docker exec -it mysqlのCONTAINER_ID /bin/bash
+mysql -h db -P 3306 -u root -p
+use spohubdb;
+show tables;
+```
+イベントの登録状態を確認する
+```
+select * from Events;
+```
+
