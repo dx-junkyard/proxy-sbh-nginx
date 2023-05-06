@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sports Event Form</title>
+    <script type="module">
+        import SportsEventSdk from "./sportsEventSdk.js";
+
+        const sdk = new SportsEventSdk("https://localhost");
+
+        async function submitForm(e) {
+            e.preventDefault();
+            const title = document.getElementById("title").value;
+            const timeFrom = document.getElementById("timeFrom").value;
+            const timeTo = document.getElementById("timeTo").value;
+            const comment = document.getElementById("comment").value;
+
+            try {
+                const result = await sdk.createEvent(title, timeFrom, timeTo, comment);
+                alert("Event created successfully!");
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        document.getElementById("eventForm").addEventListener("submit", submitForm);
+    </script>
+</head>
+<body>
+  <h1>スポーツイベントフォーム</h1>
+  <form id="eventForm">
+    <label for="title">タイトル:</label>
+    <input type="text" id="title" name="title" required><br>
+
+    <label for="comment">コメント:</label>
+    <input type="text" id="comment" name="comment" required><br>
+
+    <label for="timeFrom">開始時刻:</label>
+    <input type="datetime-local" id="timeFrom" name="timeFrom" required><br>
+
+    <label for="timeTo">終了時刻:</label>
+    <input type="datetime-local" id="timeTo" name="timeTo" required><br>
+
+    <button type="submit">送信</button>
+  </form>
+</body>
+</html>
+
