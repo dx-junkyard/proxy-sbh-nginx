@@ -11,14 +11,22 @@ services:
     ports:
       - "443:443"
 
+#  sbh-fe-app:
+#    image: nginx:latest
+#    restart: always
+#    volumes:
+#      - "$PWD/fe_test/index.html:/usr/share/nginx/html/index.html"
+#      - "$PWD/fe_test/sportsEventSdk.js:/usr/share/nginx/html/sportsEventSdk.js"
+#    ports:
+#      - "80:80"
   sbh-fe-app:
-    image: nginx:latest
-    restart: always
+    build: .
+    image: sports-barrier-free-liff
     volumes:
-      - "$PWD/fe_test/index.html:/usr/share/nginx/html/index.html"
-      - "$PWD/fe_test/sportsEventSdk.js:/usr/share/nginx/html/sportsEventSdk.js"
-    ports:
-      - "80:80"
+      - "./sports-barrier-free-liff:/app"
+      - "/app/node_modules"
+    command: "yarn dev"
+
 
   # MySQL
   db:

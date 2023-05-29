@@ -1,26 +1,29 @@
-# proxy-sbh-nginx
+# sports-barrier-free-hub
 
 ### 概要説明
-Tokyo OSS Party!!の作品、[Sports Barrier-free Hub](https://protopedia.net/prototype/3746)のバックエンド。
+Tokyo OSS Party!!の作品、[Sports Barrier-free Hub](https://protopedia.net/prototype/3746)。
 
 
-### 1. ビルドとサービス起動に必要な各種ファイル生成
+### 1. 
 ```
-sh build.sh
+git clone -b ura-fe-test https://github.com/dx-junkyard/sports-barrier-free-hub.git
+cd sports-barrier-free-hub
+git clone https://github.com/dx-junkyard/sports-barrier-free-liff.git
 ```
-ここでは、以下を行います。
-- ビルド用のdocker image生成
-- jarファイル生成
-- 生成したjarを使ったサービスのimageの生成
-- nginx-proxy、MySQL、前述の各サービスを起動するdocker-compose.yamlの生成
+その他、FEに関する設定は[README](https://github.com/dx-junkyard/sports-barrier-free-liff/blob/main/README.md)を参照。
 
 ### 2. proxy, 各サービス、DBの起動
 ```
-docker-compose up
+docker-compose up -d
 ```
 
 
 ### 3. 動作確認
+#### ログイン
+```
+https://localhost
+```
+
 #### イベント登録
 ```
 curl -XPOST -H "Content-Type: application/json"  http://localhost/sportsevent/v1/api/event -d'{"title":"ボッチャ体験会Part2","timeFrom":"2023-05-21 12:00","timeTo":"2023-05-21 15:00","ownerId":"xxxxx_owner_xxxx_id", "comment":"どなたでも参加いただけます","eventType":1, "sportEventIdList":[1,2]}'
